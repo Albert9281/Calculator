@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>web计算器</title>
+		<style type="text/css">
+			input{
+				width: 395px;
+				height: 50px;
+				font-size: 30px;
+			}
+			tr{
+				text-align: center;
+			}
+			td{
+				width: 100px;
+				height: 91px;
+				font-size: 25px;
+			}
+			/*伪类选择器*/
+			td:hover{
+				background-color: blue;
+				cursor: pointer;
+			}
+			div{
+				background-image:url(img/timg.jpg);
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body >
+		<div>
+		<center><span id="sj"></center>
+		<center><input type="text" value="0" id="show" disabled="disabled"></center>
+		<table border="1px" cellpadding="2" cellspacing="0" align="center" width="400px" height="550px">
+			<tr>
+				<td bgcolor="gray" class="operator">mc</td>
+				<td bgcolor="gray" class="operator">m+</td>
+				<td bgcolor="gray" class="operator">m-</td>
+				<td bgcolor="gray" class="operator">mr</td>
+			</tr>
+			<tr>
+				<td bgcolor="gray" id="clear">AC</td>
+				<td bgcolor="gray" id="del">Del</td>
+				<td bgcolor="gray" class="operator">/</td>
+				<td bgcolor="gray" class="operator">*</td>
+			</tr>
+			<tr>
+				<td bgcolor="white"class="num">7</td>
+				<td bgcolor="white"class="num">8</td>
+				<td bgcolor="white"class="num">9</td>
+				<td bgcolor="gray" class="operator">-</td>
+			</tr>
+			<tr>
+				<td bgcolor="white"class="num">4</td>
+				<td bgcolor="white"class="num">5</td>
+				<td bgcolor="white"class="num">6</td>
+				<td bgcolor="gray" class="operator">+</td>
+			</tr>
+			<tr>
+				<td bgcolor="white"class="num">1</td>
+				<td bgcolor="white"class="num">2</td>
+				<td bgcolor="white"class="num">3</td>
+				<td rowspan="2" bgcolor="orangered" id="result">=</td>
+			</tr>
+			<tr>
+				<td bgcolor="white"colspan="2">0</td>
+				<td bgcolor="white">.</td>
+			</tr>
+		</table>
+		</div>
+	</body>
+	
+	<script>
+	//获取显示框的标签对象
+		var showResult = document.getElementById("show");
+		var del = document.getElementById("del");
+		var ac = document.getElementById("clear");
+		var result = document.getElementById("result");
+	//定义操作数和运算符
+		var numValue1 = "";
+		var numValue2 = "";
+		var oper = "";
+		
+		var nums = document.getElementsByClassName("num");
+		for(var i = 0; i<nums.length;i++){
+			nums[i].onclick = function(){
+				numValue1 += this.innerText;
+				showResult.value = numValue1;
+			}
+		}
+		
+		var operators = document.getElementsByClassName("operator");
+		for(var i = 0; i<operators.length; i++){
+			operators[i].onclick = function(){
+				if(numValue2 == ""){
+					numValue2 = numValue1;
+					numValue1 = "";
+					oper = this.innerText;
+				}else{
+					if(numValue1 != ""){
+						resultFn();
+					}
+					oper = this.innerText;
+				}
+			}
+		}
+		
+	clear.onclick = function(){
+		numValue1 = "";
+		numValue2 = "";
+		oper = "";
+		showResult.value = "0";
+	}
+	
+	del.onclick = function(){
+		if(numValue1.length != 1){
+			numValue1 = numValue1.substring(0,numValue1.length-1);
+			showResult.value = numValue1;
+		}
+	}
+	
+	result.onclick = function(){
+		resultFn();
+	}
+	
+	function resultFn(){
+		var one = new  Number(numValue2);
+		var two = new Number(numValue1);
+		var r = null;
+		switch(oper){
+			case "+":
+			r = one + two;
+			break;
+			case "-":
+			r = one - two;
+			break;
+			case "*":
+			r = one * two;
+			break;
+			case "/":
+			r = one / two;
+			break;
+		}
+		numValue2 = new Number(r).toFixed(6) ;
+		numValue1 = "" ; 
+		showResult.value = numValue2*1; 
+	}
+	//显示时间
+	var doc = window.document;
+	function showtime() {
+	var v = new Date();
+	var ss = v.getTime();
+	var times = v.toLocaleString(ss);
+	doc.getElementById("sj").innerHTML = times;
+	}
+	showtime();
+	var id = window.setInterval("showtime()", 1000);
+	</script>
+</html>
